@@ -1,0 +1,33 @@
+@EndUserText.label : 'Tbl for stud 01'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ztbl_stud_unm_01 {
+
+  key client         : abap.clnt not null;
+  key id             : sysuuid_x16 not null;
+  studentid          : abap.numc(12);
+  firstname          : abap.char(100);
+  lastname           : abap.char(100);
+  age                : abap.numc(4);
+  course             : abap.char(60);
+  courseduration     : abap.numc(4);
+  status             : abap_boolean;
+  gender             : abap.char(1);
+  dob                : abap.dats;
+  intern_desgn       : abap.char(20);
+  @Semantics.amount.currencyCode : 'ztbl_stud_unm_01.currency_code'
+  intern_salary      : abap.curr(15,2);
+  currency_code      : abap.cuky;
+  @Semantics.amount.currencyCode : 'ztbl_stud_unm_01.currency_code'
+  intern_bonus       : abap.curr(15,2);
+  attachment         : abap.rawstring(0);
+  mimetype           : abap.char(128);
+  filename           : abap.char(128);
+  file_status        : abap.char(50);
+  template_status    : abap.char(50);
+  lastchangedat      : abp_lastchange_tstmpl;
+  locallastchangedat : abp_locinst_lastchange_tstmpl;
+
+}
