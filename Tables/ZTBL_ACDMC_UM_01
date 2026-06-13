@@ -1,0 +1,17 @@
+@EndUserText.label : 'Tbl for academic UNM 01'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ztbl_acdmc_um_01 {
+
+  key client : abap.clnt not null;
+  @AbapCatalog.foreignKey.screenCheck : false
+  key id     : sysuuid_x16 not null
+    with foreign key ztbl_stud_unm_01
+      where client = ztbl_acdmc_um_01.client
+        and id = ztbl_acdmc_um_01.id;
+  key id1    : sysuuid_x16 not null;
+  course     : zde_course_01 not null;
+
+}
