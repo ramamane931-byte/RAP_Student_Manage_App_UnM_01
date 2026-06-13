@@ -1,0 +1,37 @@
+@EndUserText.label : 'Draft tbl stud unm 01'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ztbl_d_stud_unm {
+
+  key mandt           : mandt not null;
+  key id              : sysuuid_x16 not null;
+  studentid           : abap.numc(12);
+  firstname           : abap.char(100);
+  lastname            : abap.char(100);
+  age                 : abap.numc(4);
+  course              : abap.char(60);
+  courseduration      : abap.numc(4);
+  status              : abap_boolean;
+  gender              : abap.char(1);
+  dob                 : abap.dats;
+  interndesgn         : abap.char(20);
+  @Semantics.amount.currencyCode : 'ztbl_d_stud_unm.currencycode'
+  internsalary        : abap.curr(15,2);
+  currencycode        : abap.cuky;
+  @Semantics.amount.currencyCode : 'ztbl_d_stud_unm.currencycode'
+  internbonus         : abap.curr(15,2);
+  attachment          : abap.rawstring(0);
+  mimetype            : abap.char(128);
+  filename            : abap.char(128);
+  filestatus          : abap.char(50);
+  templatestatus      : abap.char(50);
+  criticality         : abap.int1;
+  templatecriticality : abap.int1;
+  lastchangedat       : abp_lastchange_tstmpl;
+  locallastchangedat  : abp_locinst_lastchange_tstmpl;
+  genderdesc          : val_text;
+  "%admin"            : include sych_bdl_draft_admin_inc;
+
+}
