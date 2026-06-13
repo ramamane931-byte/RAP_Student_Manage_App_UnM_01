@@ -1,0 +1,18 @@
+@EndUserText.label : 'Draft tbl for attachment unm 01'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define table ztbl_d_attac_unm {
+
+  key client    : abap.clnt not null;
+  key id        : sysuuid_x16 not null;
+  key attach_id : sysuuid_x16 not null;
+  comments      : abap.char(30);
+  attachment    : zde_attachment_01;
+  mimetype      : abap.char(128);
+  filename      : abap.char(128);
+  lastchangedat : abp_lastchange_tstmpl;
+  "%admin"      : include sych_bdl_draft_admin_inc;
+
+}
