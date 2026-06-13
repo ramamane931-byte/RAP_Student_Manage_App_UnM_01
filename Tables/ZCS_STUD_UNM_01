@@ -1,0 +1,24 @@
+@EndUserText.label : 'Control structure Stud UNM 01'
+@AbapCatalog.enhancement.category : #NOT_EXTENSIBLE
+@AbapCatalog.tableCategory : #TRANSPARENT
+@AbapCatalog.deliveryClass : #A
+@AbapCatalog.dataMaintenance : #RESTRICTED
+define structure zcs_stud_unm_01 {
+
+  key id             : xsdboolean not null;
+  studentid          : xsdboolean;
+  firstname          : xsdboolean;
+  lastname           : xsdboolean;
+  age                : xsdboolean;
+  course             : xsdboolean;
+  courseduration     : xsdboolean;
+  status             : xsdboolean;
+  gender             : xsdboolean;
+  dob                : xsdboolean;
+  interndesgn        : xsdboolean;
+  internsalary       : xsdboolean;
+  internbonus        : xsdboolean;
+  lastchangedat      : xsdboolean;
+  locallastchangedat : xsdboolean;
+
+}
