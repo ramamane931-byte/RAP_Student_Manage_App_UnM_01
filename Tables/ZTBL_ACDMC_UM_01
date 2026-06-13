@@ -8,10 +8,12 @@ define table ztbl_acdmc_um_01 {
   key client : abap.clnt not null;
   @AbapCatalog.foreignKey.screenCheck : false
   key id     : sysuuid_x16 not null
-    with foreign key ztbl_stud_unm_01
-      where client = ztbl_acdmc_um_01.client
-        and id = ztbl_acdmc_um_01.id;
+    with foreign key ztbl_stud_hdr_3
+      where client = ztbl_acadmic_3.client
+        and id = ztbl_acadmic_3.id;
   key id1    : sysuuid_x16 not null;
-  course     : zde_course_01 not null;
+  course     : zde_std_course not null;
+  semester   : zde_semstr not null;
+  semresult  : zde_semstr_reslt;
 
 }
