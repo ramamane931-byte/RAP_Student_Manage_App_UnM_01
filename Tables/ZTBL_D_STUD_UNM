@@ -11,7 +11,7 @@ define table ztbl_d_stud_unm {
   firstname           : abap.char(100);
   lastname            : abap.char(100);
   age                 : abap.numc(4);
-  course              : abap.char(60);
+  course              : abap.char(50);
   courseduration      : abap.numc(4);
   status              : abap_boolean;
   gender              : abap.char(1);
