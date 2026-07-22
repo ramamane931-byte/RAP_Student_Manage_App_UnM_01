@@ -1,0 +1,6 @@
+@EndUserText.label: 'SD for Student UNM 001'
+define service ZSD_STUD_UNM_01 {
+  expose ZC_ROOT_STUD_UNM_01     as Student;
+  expose ZC_CHILD_ACDMC_UNM_001  as Academicresult;
+  expose ZC_CHILD_ATTACH_UNM_001 as Attaching;
+}

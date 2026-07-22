@@ -1,0 +1,40 @@
+@Metadata.layer: #PARTNER
+@UI: {
+  headerInfo: { typeName: 'Attaching',
+                typeNamePlural: 'Attachings',
+                title: { type: #STANDARD, value: 'Attach_Id' } } }
+annotate view ZC_CHILD_ATTACH_UNM_001 with
+{
+  @UI.facet: [
+              { id:           'Attaching',
+                purpose:      #STANDARD,
+                type:         #IDENTIFICATION_REFERENCE,
+                label:        'Attaching',
+                position:     10 }  ]
+
+  @UI.identification: [{ position: 10 , label: 'Attachment UUID' }]
+  @UI.lineItem: [{ position: 10 , label: 'Attachment UUID' }]
+  Id;
+
+  @UI.identification: [{ position: 20 , label: 'Attachment ID' }]
+  @UI.lineItem: [{ position: 20 , label: 'Attachment ID' }]
+  Attach_Id;
+
+  @UI.hidden: true
+  Comments;
+
+  @UI.identification: [{ position: 30 , label: 'Attachment' }]
+  @UI.lineItem: [{ position: 30 , label: 'Attachment' }]
+  Attachment;
+
+  @UI.hidden: true
+  Mimetype;
+
+  @UI.identification: [{ position: 40 , label: 'Filename' }]
+  @UI.lineItem: [{ position: 40 , label: 'Filename' }]
+  Filename;
+
+  @UI.hidden: true
+  lastchangedat;
+
+}

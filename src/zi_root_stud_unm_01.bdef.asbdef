@@ -1,0 +1,142 @@
+unmanaged implementation in class zbp_i_root_stud_unm_01 unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ROOT_STUD_UNM_01 alias Student
+draft table ztbl_d_stud_unm
+early numbering
+
+/// ETAG FUNCTIONALITY: ""OPTIMISTIC CONCURRENCY CONTROL
+/// For eg: Both a users accessing same record in a read mode or display mode, but they are not locked in.
+/// Locallastchange timestamp value will be the same at both the users.
+/// Thing changed only when any of the user changed a record and at the same time second user try to changed
+/// a record then system will thrown an error message like below and the timestamp value also will be changed.
+///ERROR MSG: 'Your changes could not be saved. Refresh the data to work with the most recent version.'
+lock master total etag Locallastchangedat //ETag field changes
+authorization master ( global, instance )
+etag master Locallastchangedat //ETag field changes
+{
+  create ( authorization : none );
+  update;
+  delete;
+  //// 'Readonly' is a Static Feature Control
+  field ( readonly ) Id, Age, Courseduration,
+  Genderdesc, ////Additional bindings
+  Studentid, Lastchangedat, Locallastchangedat;
+
+  ////ADDED A 'CREATED' BUTTON THROUGH ASSOCIATION TO THE OBJECT PAGE
+  association _academicres { create; with draft; }
+  association _Attaching { create; with draft; }
+  //  association _report { create ( features : instance ); }
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  field ( mandatory ) Firstname, Lastname, InternDesgn; // MAKE FIELDS MANDATORY, RECOGNIZED RED '*' BEHIND FIELD NAME
+  validation validate_fields on save { create; update; } // VALIDATE MANDATORY FIELDS
+
+  ////FIELD 'COURSE' IS NOT DEFINE AS MANDATORY FIELD BUT STILL NEED TO VALIDATE.
+  ////FIELD 'COURSE' SHOULD NOT BE BLANK. AND THE FIELD SHOULD BE HIGHLIGHT WHILE ERROR.
+  validation validate_course on save { field Course; create; update; } // VALIDATE COURSE FIELD
+
+  //  determination updateCourseDuration on save { field Course; }
+  ////IF YOU WANT TO CHANGE A FIELD VALUE BASE ON KEYBOARD BUTTON 'TAB' THEN USE 'DETERMINATION ON MODIFY'
+  determination updateCourseDuration on modify { field Course; }
+  //Calcualte 'Age' base on 'DOB':
+  determination calculateAge on modify { field Dob; }
+
+  determination changeSalary on modify { field InternDesgn; }
+
+  side effects
+  { field Course affects field Courseduration; // } ////AS SOON AS FIELD VALUE CHANGED WIHTOUT CLICK ON THE 'SAVE' BUTTON
+    field Dob affects field Age;
+    field InternDesgn affects field InternSalary; }
+  /// For eg: 'COURSE' VALUE ENTERED THEN 'Courseduration' VALUE AUTOMATICALLY CHANGED
+
+  /// DETERMINATION OR VALIDATION WITH 'ON SAVE' METHOD SHOULD BE DEFINE UNDER 'DRAFT DETERMINATION ACTION'
+  draft determine action Prepare
+  {
+    validation validate_fields; /// with 'on save'
+    validation validate_course; /// with 'on save'
+    //    determination updateCourseDuration; /// with 'on save'
+    //// 'on modify' determination methods will automatically trigger, then no need to declared under 'draft determine action'
+  }
+
+////Dynamic Feature Control: 'features : instance'
+  action ( features : instance, authorization : update ) setAdmitted result [1] $self; /// Dyn. Feature Custom Action - Change State
+  action updateStudentStatus parameter ZAB_STUD_UNM_01 result [1] $self; /// ABSTRACT ENTITY METHOD
+  action multistatusUpdate result [1] $self; //// Patameter 'invocationGrouping' in the UI lineitem ti update the field 'STATUS' for multiple seletected items.
+
+  factory action copyData [1]; ////Instance bound factory action
+  static factory action createInstance [1]; ////Static factory action ///Better to used for Managed scenario
+
+  mapping for ztbl_stud_unm_01 control zcs_stud_unm_01
+    {
+      Id                 = id;
+      Studentid          = studentid;
+      Firstname          = firstname;
+      Lastname           = lastname;
+      Age                = age;
+      Course             = course;
+      Courseduration     = courseduration;
+      Status             = status;
+      Gender             = gender;
+      Dob                = dob;
+      InternDesgn        = intern_desgn;
+      InternSalary       = intern_salary;
+      CurrencyCode       = currency_code;
+      InternBonus        = intern_bonus;
+      Lastchangedat      = lastchangedat;
+      Locallastchangedat = locallastchangedat;
+    }
+}
+
+define behavior for ZI_CHILD_ACDMC_UNM_001 alias Academicresult
+draft table ztbl_d_acdmc_unm
+early numbering
+lock dependent by _student
+authorization dependent by _student
+etag dependent by _student
+{
+  update;
+  delete;
+
+  association _student { with draft; }
+
+  field ( readonly ) Id, Id1;
+  field ( readonly ) Course_desc;
+  mapping for ztbl_acdmc_um_01
+    {
+      Id      = id;
+      Id1     = id1;
+      Course  = course;
+    }
+}
+
+define behavior for ZI_CHILD_ATTACH_UNM_001 alias Attaching
+draft table ztbl_d_attac_unm
+early numbering
+lock dependent by _student
+authorization dependent by _student
+etag dependent by _student
+{
+  update;
+  delete;
+
+  association _student { with draft; }
+
+  field ( readonly ) Id, Attach_Id;
+
+  mapping for ztbl_attc_unm_01
+    {
+      Attach_Id     = attach_id;
+      Id            = id;
+      Comments      = comments;
+      Attachment    = attachment;
+      Mimetype      = mimetype;
+      Filename      = filename;
+      lastchangedat = lastchangedat;
+    }
+}

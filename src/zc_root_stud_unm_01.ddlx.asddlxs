@@ -1,0 +1,189 @@
+@Metadata.layer: #PARTNER
+
+@UI: {
+  headerInfo: { typeName: 'Student',
+                typeNamePlural: 'Students',
+                typeImageUrl: 'sap-icon://building', //// USED TO DISPLAY IMAGE AT THE TOP OF THE OBJECT PAGE
+                title: { type: #STANDARD, label: 'Student', value: 'Studentid' }, //// USED TO DISPLAY STUDENT ID VALUE AT THE TOP OF THE OBJECT PAGE
+                description.value: 'Firstname' }, //// USED TO DISPLAY FIRSTNAME AT THE TOP OF THE OBJECT PAGE
+  presentationVariant: [{ sortOrder: [{ by: 'Studentid', direction:  #DESC }], visualizations: [{type: #AS_LINEITEM}] }] }
+annotate view ZC_ROOT_STUD_UNM_01 with
+{
+  @UI.facet: [
+                 { id: 'Studhdrid',
+                   purpose: #HEADER,
+                   type: #DATAPOINT_REFERENCE,
+                   position: 10,
+                   targetQualifier: 'trgtiddata' }, //// USED TO DISPLAY 'STUDENT ID' AT HEADER LEVEL
+
+                 { id: 'idheader',
+                   purpose: #HEADER,
+                   label: 'Header Data',
+                   type: #FIELDGROUP_REFERENCE,
+                   targetQualifier: 'hdheader' },
+
+                 { id: 'Studname',
+                   purpose: #HEADER,
+                   type: #DATAPOINT_REFERENCE,
+                   position: 20,
+                   targetQualifier: 'trgtstatsdata' }, //// USED TO DISPLAY 'STUDENT STATUS'' AT HEADER LEVEL
+
+  ///// START: DEFINED TAB DETAILS DISPLAY IN THE SECOND PAGE////
+                 { id: 'Student',   /// DEFINED IN THE BEHAVIOUR DEFINATION
+                   purpose: #STANDARD,
+                   type: #COLLECTION,
+                   label: 'Student Details', //// USED TO DISPLAY FIRST TAB 'STUDENT DETAILS'
+                   position: 10 },
+
+                 { id: 'Identification',
+                   purpose: #STANDARD,
+                   type: #IDENTIFICATION_REFERENCE,
+                   parentId: 'Student',
+                   label: 'Student Data:-->', //// USED TO DISPLAY SUBTITLE IN THE FIRST TAB
+                   position: 10 },
+
+                 { id: 'Idgroupintern',
+                   purpose: #STANDARD,
+                   type: #FIELDGROUP_REFERENCE,
+                   parentId: 'Student',
+                   label: 'Internship Details:-->', //// USED TO DISPLAY SUBTITLE IN THE FIRST TAB
+                   position: 15,
+                   targetQualifier: 'fgInterndata' },
+
+                 { id: 'Idgrouplastchanged',
+                   purpose: #STANDARD,
+                   type: #FIELDGROUP_REFERENCE,
+                   parentId: 'Student',
+                   label: 'Last changed:-->', //// USED TO DISPLAY SUBTITLE IN THE FIRST TAB
+                   position: 20,
+                   targetQualifier: 'fgLastChanged' },
+
+                 { id: 'Academicresult', /// DEFINED IN THE BEHAVIOUR DEFINATION
+                   purpose: #STANDARD,
+                   type : #LINEITEM_REFERENCE,
+                   label : 'Academic Result', //// USED TO DISPLAY SECOND TAB 'ACADEMIC RESULT'
+                   position: 20,
+                   targetElement: '_academicres'}, /// DEFINED IN THE ROOT VIEW AS ASSOCIATION OR AS CHILD IN THE PROJECTION VIEW
+
+                 { id: 'Attaching',  /// DEFINED IN THE BEHAVIOUR DEFINATION
+                   purpose: #STANDARD,
+                   type: #LINEITEM_REFERENCE,
+                   label: 'Attachment Details', //// USED TO DISPLAY THIRD TAB 'ATTACHMENTS DETAILS'
+                   position: 30,
+                   targetElement: '_Attaching'} /// DEFINED IN THE ROOT VIEW AS ASSOCIATION OR AS CHILD IN THE PROJECTION VIEW
+
+  ///// END: DEFINED TAB DETAILS DISPLAY IN THE SECOND PAGE////
+  ]
+
+  @UI: {  lineItem: [{ position: 10, label: 'Student UUID' },
+           { type: #FOR_ACTION, dataAction: 'updateStudentStatus', label: 'Update Status' },
+           { type: #FOR_ACTION, dataAction: 'copyData', label: 'Make Copy' },
+           { type: #FOR_ACTION, dataAction: 'createInstance', label: 'Create Instance' },
+           { type: #FOR_ACTION, dataAction: 'multistatusUpdate', label: 'Multi Status Update', invocationGrouping: #ISOLATED  }
+           ]  ,
+        identification: [{ position: 10 , label: 'Student UUID' },
+           { type: #FOR_ACTION, dataAction: 'updateStudentStatus', label: 'Update Status' }
+        ]}
+  Id;
+
+  @UI: { lineItem: [{ position: 15, label: 'Student ID' }],
+         identification: [{ position: 15 , label: 'Student ID' }],
+         selectionField: [{ position: 15 }] }
+  @UI.fieldGroup: [{ qualifier: 'hdheader' , position: 10 , label: 'Student ID'}] //// DISPLAY 'STUDENT ID' AT THE HEADER LEVEL, BELOW 'HEADER DATA' CAPTION
+  @UI.dataPoint: { qualifier: 'trgtiddata', title: 'Student ID'  } //// DISPLAY 'STUDENT ID' AT THE HEADER LEVEL
+  Studentid;
+
+  @UI: { lineItem: [{ position: 20, label: 'First Name' }],
+         identification: [{ position: 20 , label: 'First Name' }],
+         selectionField: [{ position: 20 }] }
+  Firstname;
+
+  @UI: { lineItem: [{ position: 30, label: 'Last Name' }],
+         identification: [{ position: 30 , label: 'Last Name' }],
+         selectionField: [{ position: 30 }] }
+  Lastname;
+
+  @UI: { lineItem: [{ position: 40, label: 'Age' }]  ,
+         identification: [{ position: 40 , label: 'Age' }]}
+  Age;
+
+  @UI: { lineItem: [{ position: 50, label: 'Course' }]  ,
+         identification: [{ position: 50 , label: 'Course' }]}
+
+  @Consumption.valueHelpDefinition: [ { entity:{ name: 'ZI_STUD_COURSE' , element: 'Value' },
+  distinctValues: true, additionalBinding: [{ localElement: 'Course', element: 'Description', usage: #FILTER_AND_RESULT }]
+    } ]
+  Course;
+
+  @UI: { lineItem: [{ position: 60, label: 'Course Duration' }]  ,
+   identification: [{ position: 60 , label: 'Course Duration' }]}
+  Courseduration;
+
+  @UI: { lineItem: [{ position: 70, label: 'Status' },
+       { type: #FOR_ACTION, dataAction: 'setAdmitted', label: 'Set Admitted' }  ],
+       identification: [{ position: 70 , label: 'Status' },
+       { type: #FOR_ACTION, dataAction: 'setAdmitted', label: 'Set Admitted' }]}
+  @UI.dataPoint: { qualifier: 'trgtstatsdata', title: 'Student Status' }
+  Status;
+
+  @UI: { lineItem: [{ position: 80, label: 'Gender' }]  ,
+         identification: [{ position: 80 , label: 'Gender' }]}
+
+  //// Property 'additionalBinding:' as soon as 'Gender' get selected from F4 Help 'Gender Description' will updated.
+  @Consumption.valueHelpDefinition: [ { entity:{ name: 'ZI_STUD_GENDER' , element: 'Value' },
+   distinctValues: true,
+   additionalBinding: [{ localElement: 'Gender',
+                         element: 'Description',
+                         usage: #FILTER_AND_RESULT }]
+    } ]
+  Gender;
+
+  @UI: { lineItem: [{ position: 90, label: '' }]  ,
+         identification: [{ position: 90 , label: '' }]}
+  Genderdesc;
+
+  @UI: { lineItem: [{ position: 100, label: 'Date of birth' }]  ,
+         identification: [{ position: 100, label: 'Date of birth' }]}
+  Dob;
+
+  @UI: { lineItem: [{ position: 110, label: 'Intern Variable Pay' }]  ,
+         identification: [{ position: 110, label: 'Intern Variable Pay' }]}
+  variablePay;
+
+  @UI.fieldGroup: [{ qualifier: 'fgInterndata', position: 10, label: 'Intern Designation'}]
+  InternDesgn;
+
+  @UI.fieldGroup: [{ qualifier: 'fgInterndata', position: 20, label: 'Intern Salary'}]
+  InternSalary;
+
+  @UI.fieldGroup: [{ qualifier: 'fgInterndata', position: 30, label: 'Intern Bonus'}]
+  InternBonus;
+
+
+  ////SOM: Student Report Changes
+  //  @UI.identification: [{ position: 110, label: 'Choose Excel File' }]
+  //  Attachment;
+  //
+  //  @UI.lineItem: [{ position: 120, importance: #HIGH, label: 'Template Status', criticality: 'TemplateCriticality' }]
+  //  @UI.dataPoint: { qualifier: 'templateStatus', title: 'Template Status', criticality: 'TemplateCriticality' }
+  //  TemplateStatus;
+  //
+  //  @UI.lineItem: [{ position: 130, importance: #HIGH, label: 'Excel Filename' }]
+  //  Filename;
+  //
+  //  @UI.lineItem: [{ position: 140, importance: #HIGH, label: 'File Status', criticality: 'Criticality' }]
+  //  @UI.dataPoint: { qualifier: 'fileStatus', title: 'File Status', criticality: 'Criticality' }
+  //  FileStatus;
+  ////EOM: Student Report Changes
+
+  //  @UI: { lineItem: [{ position: 110, label: 'Discount' }]  ,
+  //         identification: [{ position: 110 , label: 'Discount' }]}
+  //  discount;
+
+  @UI.fieldGroup: [{ qualifier: 'fgLastChanged' , position: 10 , label: 'Last Changed At'}]
+  Lastchangedat;
+
+  @UI.fieldGroup: [{ qualifier: 'fgLastChanged' , position: 20 ,  label: 'Local Lastchanged At'}]
+  Locallastchangedat;
+
+}

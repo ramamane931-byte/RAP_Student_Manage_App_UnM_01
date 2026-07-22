@@ -1,0 +1,35 @@
+@Metadata.layer: #PARTNER
+@UI: {
+headerInfo :{ typeName: 'Academic result' , typeNamePlural: 'Academic results',
+ title: { type: #STANDARD, label: 'Course', value: 'Course'}
+}
+}
+annotate view ZC_CHILD_ACDMC_UNM_001 with
+{
+  @UI.facet: [
+              { id: 'Academicresult' ,
+                type: #IDENTIFICATION_REFERENCE,
+                label: 'Academic Result',
+                position: 30 }
+             ]
+
+  @UI.lineItem: [{ position: 10 , label: 'Student UUID' }]
+  @UI.identification: [{ position: 10 , label: 'Student UUID' }]
+  Id;
+
+  @UI.lineItem:[{ position: 15, label: 'Course' }]
+  @UI.identification: [{ position: 15, label: 'Course' }]
+  @Consumption.valueHelpDefinition: [ { entity:{ name: 'ZI_STUD_COURSE' , element: 'Value' },
+     distinctValues: true,
+     additionalBinding: [{ localElement: 'Course_desc', element: 'Description', usage: #FILTER_AND_RESULT }]
+      }]
+  Course;
+
+  @UI.lineItem: [{ position: 20, label: 'Course Desc' }]
+  @UI.identification: [{ position: 20, label: 'Course Desc' }]
+  Course_desc;
+
+  @UI.hidden: true
+  _student;
+
+}

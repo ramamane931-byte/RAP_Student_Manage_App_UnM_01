@@ -1,0 +1,41 @@
+projection;
+strict ( 2 );
+use draft;
+
+define behavior for ZC_ROOT_STUD_UNM_01 alias Student
+{
+  use create;
+  use update;
+  use delete;
+
+  use action setAdmitted;
+  use action updateStudentStatus;
+  use action multistatusUpdate;
+  use action copyData;
+  use action createInstance;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+  use association _academicres { create; with draft; }
+  use association _Attaching { create; with draft; }
+}
+
+define behavior for ZC_CHILD_ACDMC_UNM_001 alias Academicresult
+{
+  use update;
+  use delete;
+
+  use association _student { with draft; }
+}
+
+define behavior for ZC_CHILD_ATTACH_UNM_001 alias Attaching
+{
+  use update;
+  use delete;
+
+  use association _student { with draft; }
+}

@@ -1,0 +1,8 @@
+@Metadata.layer: #CORE
+annotate entity ZAB_STUD_UNM_01 with
+//parameters parameter_name
+{
+  @EndUserText.label: 'Set Student Status'
+  status;
+
+}

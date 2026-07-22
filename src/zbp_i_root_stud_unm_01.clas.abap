@@ -1,0 +1,5 @@
+CLASS zbp_i_root_stud_unm_01 DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_root_stud_unm_01.
+ENDCLASS.
+
+CLASS zbp_i_root_stud_unm_01 IMPLEMENTATION.
+ENDCLASS.
